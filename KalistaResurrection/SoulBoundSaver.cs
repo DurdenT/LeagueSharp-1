@@ -17,7 +17,6 @@ namespace KalistaResurrection
         private static Spell R { get { return SpellManager.R; } }
         public static Obj_AI_Hero SoulBound { get; private set; }
         private static Spell _q, _e, _r;
-        public static List<Obj_AI_Hero> enemies = HeroManager.Enemies;
         private static Dictionary<float, float> _incomingDamage = new Dictionary<float, float>();
         private static Dictionary<float, float> _instantDamage = new Dictionary<float, float>();
         public static float IncomingDamage
@@ -34,10 +33,7 @@ namespace KalistaResurrection
 
         private static void OnUpdate(EventArgs args)
         {
-            _q = new Spell(SpellSlot.Q, 1000f);
-            _q.SetSkillshot(250f, 75f, 1800f, true, SkillshotType.SkillshotLine);
-            var prediction = _q.GetPrediction(SoulBound);
-
+            
             // SoulBound is not found yet!
             if (SoulBound == null)
             {
@@ -50,11 +46,18 @@ namespace KalistaResurrection
                 if (SoulBound.HealthPercentage() < 5 && SoulBound.CountEnemiesInRange(500) > 0 ||
                     IncomingDamage > SoulBound.Health)
                     R.Cast();
+                // Get enemies
                 foreach (var unit in ObjectManager.Get<Obj_AI_Hero>().Where(h => h.IsEnemy && h.IsHPBarRendered))
                 {
+                    // Get buffs
                     for (int i = 0; i < unit.Buffs.Count(); i++)
                     {
-                        if (unit.Buffs[i].Name == "rocketgrab2" && unit.Buffs[i].IsActive)
+                        // Check if the Soulbound is in a good range
+                        var enemy = HeroManager.Enemies.Where(x => SoulBound.Distance(x.Position) < 925 && SoulBound.Distance(x.Position) > 800);
+                        // Check if the Soulbound is a Blitzcrank
+                        // Check if the enemy is hooked
+                        // Check if target was far enough for ult
+                        if (SoulBound.ChampionName == "Blitzcrank" && unit.Buffs[i].Name == "rocketgrab2" && unit.Buffs[i].IsActive && enemy.Count() > 0)
                         {
                             R.Cast();
                         }
