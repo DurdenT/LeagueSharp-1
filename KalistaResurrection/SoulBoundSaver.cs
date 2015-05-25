@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +16,8 @@ namespace KalistaResurrection
         private static Obj_AI_Hero Player = ObjectManager.Player;
         private static Spell R { get { return SpellManager.R; } }
         public static Obj_AI_Hero SoulBound { get; private set; }
-
+        private static Spell _q, _e, _r;
+        public static List<Obj_AI_Hero> enemies = HeroManager.Enemies;
         private static Dictionary<float, float> _incomingDamage = new Dictionary<float, float>();
         private static Dictionary<float, float> _instantDamage = new Dictionary<float, float>();
         public static float IncomingDamage
@@ -33,6 +34,10 @@ namespace KalistaResurrection
 
         private static void OnUpdate(EventArgs args)
         {
+            _q = new Spell(SpellSlot.Q, 1000f);
+            _q.SetSkillshot(250f, 75f, 1800f, true, SkillshotType.SkillshotLine);
+            var prediction = _q.GetPrediction(SoulBound);
+
             // SoulBound is not found yet!
             if (SoulBound == null)
             {
@@ -45,6 +50,16 @@ namespace KalistaResurrection
                 if (SoulBound.HealthPercentage() < 5 && SoulBound.CountEnemiesInRange(500) > 0 ||
                     IncomingDamage > SoulBound.Health)
                     R.Cast();
+                foreach (var unit in ObjectManager.Get<Obj_AI_Hero>().Where(h => h.IsEnemy && h.IsHPBarRendered))
+                {
+                    for (int i = 0; i < unit.Buffs.Count(); i++)
+                    {
+                        if (unit.Buffs[i].Name == "rocketgrab2" && unit.Buffs[i].IsActive)
+                        {
+                            R.Cast();
+                        }
+                    }
+                }
             }
 
             // Check spell arrival
