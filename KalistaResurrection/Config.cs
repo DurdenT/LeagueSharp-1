@@ -249,6 +249,9 @@ namespace KalistaResurrection
 
             private static BoolLink _harassPlus { get; set; }
             public static bool UseHarassPlus { get { return _harassPlus.Value; } }
+            
+            private static BoolLink _kalisCrank{ get; set; }
+            public static bool UseKaliscrank { get { return _kalisCrank.Value; } }
 
             public static void Initialize()
             {
@@ -261,6 +264,7 @@ namespace KalistaResurrection
                     _saveSoulbound = Menu.AddLinkedBool("Use R to save your soulbound ally");
                     _secureE = Menu.AddLinkedBool("Use E to kill unkillable (AA) minions");
                     _harassPlus = Menu.AddLinkedBool("Auto E when a minion can die and enemies have 1+ stacks");
+                    _kalisCrank = Menu.AddLinkedBool("Use Kaliscrank by DurdenT");
                 }
             }
         }
