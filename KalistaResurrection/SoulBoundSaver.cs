@@ -57,7 +57,7 @@ namespace KalistaResurrection
                         // Check if the Soulbound is a Blitzcrank
                         // Check if the enemy is hooked
                         // Check if target was far enough for ult
-                        if (SoulBound.ChampionName == "Blitzcrank" && unit.Buffs[i].Name == "rocketgrab2" && unit.Buffs[i].IsActive && enemy.Count() > 0))
+                        if (SoulBound.ChampionName == "Blitzcrank" && unit.Buffs[i].Name == "rocketgrab2" && unit.Buffs[i].IsActive && enemy.Count() > 0)
                         {
                             R.Cast();
                         }
