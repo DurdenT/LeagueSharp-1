@@ -53,7 +53,7 @@ namespace KalistaResurrection
                     for (int i = 0; i < unit.Buffs.Count(); i++)
                     {
                         // Check if the Soulbound is in a good range
-                        var enemy = HeroManager.Enemies.Where(x => SoulBound.Distance(x.Position) < 925 && SoulBound.Distance(x.Position) > 800);
+                        var enemy = HeroManager.Enemies.Where(x => SoulBound.Distance(x.Position) > 800);
                         // Check if the Soulbound is a Blitzcrank
                         // Check if the enemy is hooked
                         // Check if target was far enough for ult
